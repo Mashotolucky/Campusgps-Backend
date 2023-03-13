@@ -11,7 +11,11 @@ const connectionString = `postgres://server_tut:Gd2HkVpDqaxBCcR06NmHteSQ6dQMk6E0
 const pool = new Pool({
   connectionString: isProduction? process.env.DATABASE_URL : connectionString,
   // ssl: isProduction ? { rejectUnauthorized: false }: false,
-  ssl: true
+  ssl: { rejectUnauthorized: false }
+});
+
+pool.on('connect', () => {
+  pool.on('error', err => console.log(err));
 });
 
 module.exports = {
